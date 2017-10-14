@@ -16,7 +16,7 @@ public class Driver {
 		for(Book b : Query.bookQuery("select * from book")){
 			System.out.println(b.toString());
 		}
-		for(BookAuthor ba : Query.authorQuery("select * from book_author")){
+		for(BookAuthor ba : Query.authorQuery("select * from book_authors")){
 			System.out.println(ba.toString());
 		}
 		for(BookCopies bc : Query.copiesQuery("select * from book_copies")){
