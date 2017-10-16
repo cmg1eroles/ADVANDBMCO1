@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Database {
-	private final String directory = "jdbc:mysql://localhost:3306/library"; //change schema name <--
+	private final String directory = "jdbc:mysql://localhost:3306/library?useSSL=false"; //change schema name <--
 	private final String user = "root";
 	private final String pass = "1234";
 	private static Database instance = new Database();

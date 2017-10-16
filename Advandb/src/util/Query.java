@@ -13,7 +13,7 @@ import model.Borrower;
 import model.Database;
 import model.Publisher;
 
-public class Query {
+public class Query extends Model{
 	
 	public static ArrayList<BookAuthor> authorQuery(String query){
 		ArrayList<BookAuthor> ba = new ArrayList<BookAuthor>();
