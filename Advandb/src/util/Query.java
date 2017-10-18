@@ -1,8 +1,11 @@
 package util;
 
 
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import model.Book;
@@ -14,6 +17,59 @@ import model.Database;
 import model.Publisher;
 
 public class Query {
+	
+	public static ArrayList<String[]> rows(String query){
+		ArrayList<String[]> rows = new ArrayList<String[]>();
+		ResultSet rs = Database.getInstance().query(query);
+		
+		try {
+			ResultSetMetaData rsmd = rs.getMetaData();
+			//gets the column names
+			String[] col = new String[rsmd.getColumnCount()];
+			for(int i = 1; i <= rsmd.getColumnCount(); i++){
+				col[i-1] = rsmd.getColumnLabel(i);
+			}
+			rows.add(col);
+			
+			while(rs.next()){
+				String[] s = new String[rsmd.getColumnCount()];
+				for(int i = 1; i <= rsmd.getColumnCount(); i++){
+					switch(rsmd.getColumnType(i)){
+						case Types.INTEGER: s[i-1] = Integer.toString(rs.getInt(i));
+							break;
+						case Types.DATE: Date d = rs.getDate(i);
+							s[i-1] = d.toString();
+							break;
+						case Types.VARCHAR: s[i-1] = rs.getString(i);
+							break;
+					}
+				}
+				rows.add(s);
+			}
+			Database.getInstance().closeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return rows;
+	}
+	
+	public static ArrayList<String[]> profiling(String query){
+		ArrayList<String[]> profiles = new ArrayList<String[]>();
+		ResultSet rs = Database.getInstance().profiling(query);
+		
+		try {
+			rs.next();
+			String[] col = new String[]{"Query", "Duration"};
+			profiles.add(col);
+			profiles.add(new String[]{rs.getString(col[0]), Double.toString(rs.getDouble(col[1]))});
+			Database.getInstance().closeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return profiles;
+	}
 	
 	public static ArrayList<BookAuthor> authorQuery(String query){
 		ArrayList<BookAuthor> ba = new ArrayList<BookAuthor>();

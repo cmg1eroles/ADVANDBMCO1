@@ -43,6 +43,18 @@ public class Database {
 		return rs;
 	}
 	
+	public ResultSet profiling(String query){
+		try {
+			s = con.createStatement();
+			s.executeUpdate("set profiling = 1;");
+			s.executeQuery(query);
+			rs = s.executeQuery("show profiles");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
 	public void closeQuery(){
 		try {
 			s.close();
