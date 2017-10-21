@@ -55,6 +55,15 @@ public class Database {
 		return rs;
 	}
 	
+	public void executeUpdate(String update){
+		try {
+			s = con.createStatement();
+			s.executeUpdate(update);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void closeQuery(){
 		try {
 			s.close();

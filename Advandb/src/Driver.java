@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 
 import model.Database;
+import util.Optimize;
 import util.Query;
 
 public class Driver {
@@ -9,7 +10,7 @@ public class Driver {
 		//connects to the database
 		Database.getInstance().connect();
 		
-		String query = "select Title from book where title like '%zombie%';";
+		String query = "select Title from book, book_authors where AuthorFirstName = 'Harper' and book.BookID = 3312;";
 		
 		//querying the rows
 		ArrayList<String[]> rows = Query.rows(query);
