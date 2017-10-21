@@ -7,6 +7,7 @@ import model.Borrower;
 import model.Database;
 import model.Publisher;
 import util.Query;
+import util.QueryNumber;
 import controller.MainController;
 import javafx.application.*;
 import javafx.stage.*;
