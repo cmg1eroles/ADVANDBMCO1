@@ -42,6 +42,8 @@ public class Query {
 							break;
 						case Types.VARCHAR: s[i-1] = rs.getString(i);
 							break;
+						case Types.BIGINT: s[i-1] = Integer.toString(rs.getInt(i));
+							break;
 					}
 				}
 				rows.add(s);
