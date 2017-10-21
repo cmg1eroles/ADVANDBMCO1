@@ -1,14 +1,84 @@
 #DefaultLabel {
 	-fx-font-size: 20px;
-	-fx-font-family: Arial;
+	-fx-font-family: Segoue UI;
 	-fx-font-weight: bold;
 	-fx-text-fill: #000000;
 }
 
-#MainVbox {
-	-fx-background-color: #fafefc;
+#Border {
+	-fx-border-color: black;
+}
+
+#TopHbox {
+	-fx-background-color: #FFFFFF;
+	-fx-padding: 20;
+}
+
+#CenterVbox {
+	-fx-background-color: #FFFFFF;
 	-fx-border-color: transparent; 
 	-fx-padding: 20;
-	-fx-spacing: 107;
 	-fx-alignment: center;
+}
+
+.ComboBox {
+	-fx-font-size: 20px;
+	-fx-font-family: Segoue UI;
+	-fx-font-weight: normal;
+	-fx-background-color: #FDD835;
+	-fx-background-radius: 3px;
+	-fx-border-color: transparent;
+	-fx-effect: dropshadow(three-pass-box, #9E9E9E, 3, 0, 0, 2);
+	-fx-cursor: hand;
+}
+
+.ComboBox .list-view .list-cell:selected {
+	-fx-background-color: #F9A825;
+	-fx-font-family: Segoue UI;
+}
+
+.ComboBox .list-view .list-cell:hover {
+	-fx-background-color: #FBC02D;
+	-fx-font-family: Segoue UI;
+}
+
+.ComboBox .list-view .list-cell:pressed {
+	-fx-background-color: #F57F17;
+	-fx-font-family: Segoue UI;
+}
+
+#TextField {
+	-fx-font-size: 20px;
+	-fx-font-family: Segoue UI;
+	-fx-font-weight: normal;
+	-fx-background-color: #FFFFFF;
+	-fx-border-color: #BDBDBD;
+	-fx-border-radius: 3px;
+	-fx-effect: dropshadow(three-pass-box, #9E9E9E, 3, 0, 0, 2);
+}
+
+
+.Button {
+	-fx-font-size: 20px;
+	-fx-padding: 5px 25px 5px 25px;
+	-fx-font-family: Segoue UI;
+	-fx-font-weight: bold;
+	-fx-background-color: #00e500;
+	-fx-background-radius: 25px;
+	-fx-text-fill: #FFFFFF;
+	-fx-cursor: hand;
+	-fx-effect: dropshadow(three-pass-box, #9E9E9E, 4, 0, 0, 2);
+}
+
+.Button:hover {
+	-fx-background-color: #00cc00
+}
+
+.Button:pressed {
+	-fx-background-color: #00b200;
+	-fx-effect: dropshadow(three-pass-box, transparent, 0, 0, 0, 0);
+}
+
+#TextArea {
+	-fx-border-color:black;
 }

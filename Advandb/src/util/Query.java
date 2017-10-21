@@ -16,7 +16,7 @@ import model.Borrower;
 import model.Database;
 import model.Publisher;
 
-public class Query extends Model{
+public class Query {
 	
 	public static ArrayList<String[]> rows(String query){
 		ArrayList<String[]> rows = new ArrayList<String[]>();
@@ -41,6 +41,8 @@ public class Query extends Model{
 							s[i-1] = d.toString();
 							break;
 						case Types.VARCHAR: s[i-1] = rs.getString(i);
+							break;
+						case Types.BIGINT: s[i-1] = Integer.toString(rs.getInt(i));
 							break;
 					}
 				}
