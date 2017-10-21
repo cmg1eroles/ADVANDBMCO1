@@ -1,0 +1,14 @@
+#DefaultLabel {
+	-fx-font-size: 20px;
+	-fx-font-family: Arial;
+	-fx-font-weight: bold;
+	-fx-text-fill: #000000;
+}
+
+#MainVbox {
+	-fx-background-color: #fafefc;
+	-fx-border-color: transparent; 
+	-fx-padding: 20;
+	-fx-spacing: 107;
+	-fx-alignment: center;
+}

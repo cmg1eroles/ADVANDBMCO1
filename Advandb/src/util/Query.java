@@ -16,7 +16,7 @@ import model.Borrower;
 import model.Database;
 import model.Publisher;
 
-public class Query {
+public class Query extends Model{
 	
 	public static ArrayList<String[]> rows(String query){
 		ArrayList<String[]> rows = new ArrayList<String[]>();
