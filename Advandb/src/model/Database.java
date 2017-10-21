@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-public class Database {
+import view.View;
+
+public class Database extends Model{
 	private final String directory = "jdbc:mysql://localhost:3306/library"; //change schema name <--
 	private final String user = "root";
 	private final String pass = "1234";
@@ -14,10 +17,10 @@ public class Database {
 	
 	private Connection con;
 	private Statement s;
-	private ResultSet rs;
+	private ResultSet rs, profiles;
 	
 	private Database(){
-		
+		views = new ArrayList<View>();
 	}
 	
 	public void connect(){
@@ -37,6 +40,8 @@ public class Database {
 		try {
 			s = con.createStatement();
 			rs = s.executeQuery(query);
+			profiling(query);
+			notifyViews();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -46,13 +51,17 @@ public class Database {
 	public ResultSet profiling(String query){
 		try {
 			s = con.createStatement();
+			s.executeUpdate("SET profiling = 0;");
+			s.executeUpdate("SET profiling_history_size = 0;");
+			s.executeUpdate("SET profiling_history_size = 100;");
 			s.executeUpdate("set profiling = 1;");
 			s.executeQuery(query);
-			rs = s.executeQuery("show profiles");
+			profiles = s.executeQuery("show profiles");
+			//notifyViews();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return profiles;
 	}
 	
 	public void executeUpdate(String update){
@@ -68,6 +77,7 @@ public class Database {
 		try {
 			s.close();
 			rs.close();
+			profiles.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -79,5 +89,13 @@ public class Database {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ResultSet getRS(){
+		return rs;
+	}
+	
+	public ResultSet getProfiles(){
+		return profiles;
 	}
 }
