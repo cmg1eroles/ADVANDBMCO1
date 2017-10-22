@@ -1,6 +1,8 @@
 package util;
 
 public class QueryNumber {
+	
+	public static boolean isOriginal = true;
 
 	public static String one(String input){
 		return "SELECT * "
@@ -15,18 +17,31 @@ public class QueryNumber {
 	}
 	
 	public static String three(String input1, String input2){
-		return "SELECT title "
-			 + "FROM book B, book_authors BA "
-			 + "WHERE B.BookID = BA.BookID AND AuthorLastName = '"+input1+"' AND AuthorFirstName = '"+input2+"';";
+		if(isOriginal){
+			return "SELECT title "
+				 + "FROM book B, book_authors BA "
+				 + "WHERE B.BookID = BA.BookID AND AuthorLastName = '"+input1+"' AND AuthorFirstName = '"+input2+"';";
+		}else{
+			return "SELECT title "
+				 + "FROM book NATURAL JOIN (SELECT BookID FROM book_authors "
+				 + "WHERE AuthorLastName = '"+input1+"' AND AuthorFirstName = '"+input2+"') BA;";
+		}
 	}
 	
 	public static String four(String input){
-		return "SELECT BranchName "
-			 + "FROM library_branch LB, publisher P "
-			 + "WHERE BranchAddress = Address AND PublisherName = '"+input+"';";
+		if(isOriginal){
+			return "SELECT BranchName "
+				 + "FROM library_branch LB, publisher P "
+				 + "WHERE BranchAddress = Address AND PublisherName = '"+input+"';";
+		}else{
+			return "SELECT BranchName "
+				 + "FROM library_branch INNER JOIN (SELECT Address, PublisherName FROM publisher "
+				 + "WHERE PublisherName = '"+input+"') P ON BranchAddress = Address;";
+		}
 	}
 	
 	public static String five(String input1, String input2){
+		if(isOriginal){
 		return "SELECT T1.`Branch/Publisher`, Address "
 			  +"FROM ((SELECT BranchName AS 'Branch/Publisher', BorrowerFName AS 'FName', BorrowerLName AS 'LName', Address "
 			  		+"FROM library_branch LB, borrower BO "
@@ -40,67 +55,54 @@ public class QueryNumber {
 	   		  +") T1 "
 
 			  +"WHERE FName = '"+input1+"' AND LName = '"+input2+"';";
+		}else{
+			return "SELECT * "
+				 + "FROM ((SELECT BranchName AS 'Branch/Publisher', Address "
+				 + "FROM library_branch INNER JOIN borrower ON BranchAddress = Address "
+				 + "WHERE BorrowerFName = '"+input1+"' AND BorrowerLName = '"+input2+"') "
+
+				 + "UNION "
+
+	   			 + "(SELECT PublisherName AS 'Branch/Publisher', BO.Address "
+	   			 + "FROM publisher P INNER JOIN borrower BO ON P.Address = BO.Address "
+	   			 + "WHERE BorrowerFName = '"+input1+"' AND BorrowerLName = '"+input2+"') "
+	   			 + ") T1";
+		}
 	}
 	
 	public static String six(String input){
+		if(isOriginal){
 		return "SELECT BorrowerLName, BorrowerFName, COUNT(*) AS '#BooksBorrowed' "
 			  +"FROM borrower BO, book_loans BL, library_branch LB "
 			  +"WHERE BL.CardNo = BO.CardNo AND BL.BranchID = LB.BranchID "
 			  		+"AND BO.Address = LB.BranchAddress "
 			  +"GROUP BY BO.CardNo "
 			  +"HAVING COUNT(*) >= "+input+";";
+		}else{
+			return "SELECT BorrowerLName, BorrowerFName, COUNT(*) AS '#BooksBorrowed' "
+				 + "FROM book_loans NATURAL JOIN (SELECT BorrowerLName, BorrowerFName, CardNo, BranchID "
+				 + "FROM borrower INNER JOIN library_branch LB ON Address = BranchAddress) T1 "
+				 + "GROUP BY T1.CardNo "
+				 + "HAVING COUNT(*) >= "+input+";";
+		}
 
 	}
 	
 	public static String seven(){
-		return null;
+		if(isOriginal){
+			return null;
+		}else{
+			return null;
+		}
+		
 	}
 	
 	public static String eight(){
-		return null;
-	}
-	
-	public static String threeRA(String input1, String input2){
-		return "SELECT title "
-			 + "FROM book NATURAL JOIN (SELECT BookID FROM book_authors "
-			 		+ "WHERE AuthorLastName = '"+input1+"' AND AuthorFirstName = '"+input2+"') BA;";
-	}
-	
-	public static String fourRA(String input){
-		return "SELECT BranchName "
-			 + "FROM library_branch INNER JOIN (SELECT Address, PublisherName FROM publisher "
-			 		+ "WHERE PublisherName = '"+input+"') P ON BranchAddress = Address;";
-	}
-	
-	public static String fiveRA(String input1, String input2){
-		return "SELECT * "
-			  +"FROM ((SELECT BranchName AS 'Branch/Publisher', Address "
-			  		+"FROM library_branch INNER JOIN borrower ON BranchAddress = Address "
-			  		+"WHERE BorrowerFName = '"+input1+"' AND BorrowerLName = '"+input2+"') "
-
-	   		  +"UNION"
-
-	   		  +" (SELECT PublisherName AS 'Branch/Publisher', BO.Address "
-	   		  		+"FROM publisher P INNER JOIN borrower BO ON P.Address = BO.Address "
-	   		  		+"WHERE BorrowerFName = '"+input1+"' AND BorrowerLName = '"+input2+ "')"
-	   		  +") T1;";
-	}
-	
-	public static String sixRA(String input){
-		return "SELECT BorrowerLName, BorrowerFName, COUNT(*) AS '#BooksBorrowed' "
-			  +"FROM book_loans NATURAL JOIN (SELECT BorrowerLName, BorrowerFName, CardNo, BranchID "
-			  		+"FROM borrower INNER JOIN library_branch LB ON Address = BranchAddress) T1 "
-			  +"GROUP BY T1.CardNo "
-			  +"HAVING COUNT(*) >= "+input+";";
-
-	}
-	
-	public static String sevenRA(){
-		return null;
-	}
-	
-	public static String eightRA(){
-		return null;
+		if(isOriginal){
+			return null;
+		}else{
+			return null;
+		}
 	}
 	
 	public static String oneDescription(){

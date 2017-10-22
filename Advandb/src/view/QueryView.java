@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
@@ -30,7 +31,7 @@ public class QueryView extends BorderPane implements View{
 			private ComboBox<String> customizeComboBox;
 			private TextField searchTextField;
 			private Button queryButton;
-			private Button raQueryButton;
+			private ToggleButton raQueryButton;
 		private HBox optimizeHBox;
 			private ToggleGroup group;
 				private ToggleButton originalButton; 
@@ -60,6 +61,7 @@ public class QueryView extends BorderPane implements View{
 			private ResultsView rv;
 	
 	private boolean original;
+	private boolean raVersion;
 	/*private Label bookLabel;
 	private Label authorLabel;
 	private Label copiesLabel;
@@ -80,6 +82,7 @@ public class QueryView extends BorderPane implements View{
 	
 	public void initMisc(){
 		original = true;
+		raVersion = false;
 	}
 	
 	private void initScene() {
@@ -127,7 +130,7 @@ public class QueryView extends BorderPane implements View{
 				queryButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				queryButton.getStyleClass().add("Button");
 				
-				raQueryButton = new Button ("Relational Algebra Query");
+				raQueryButton = new ToggleButton ("Relational Algebra Query");
 				raQueryButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				raQueryButton.getStyleClass().add("Button");
 				
@@ -436,57 +439,17 @@ public class QueryView extends BorderPane implements View{
 				Database.getInstance().query(queryTextArea.getText().replace("\n", ""));
 			}
 		});
-		raQueryButton.setOnAction(e -> {
-			if(original){
-				String[] s = searchTextField.getText().split("_");
-				switch(queryComboBox.getSelectionModel().getSelectedIndex()){
-					case 0: Database.getInstance().query(QueryNumber.one(s[0]));
-						break;
-					case 1: Database.getInstance().query(QueryNumber.two(s[0]));
-						break;
-					case 2: Database.getInstance().query(QueryNumber.threeRA(s[0], s[1]));
-						break;
-					case 3: Database.getInstance().query(QueryNumber.fourRA(s[0]));
-						break;
-					case 4: Database.getInstance().query(QueryNumber.fiveRA(s[0],s[1]));
-						break;
-					case 5: Database.getInstance().query(QueryNumber.sixRA(s[0]));
-						break;
-					case 6: Database.getInstance().query(QueryNumber.sevenRA());
-						break;
-					case 7: Database.getInstance().query(QueryNumber.eightRA());
-						break;
-				}
-			}else{
-				switch (customizeComboBox.getSelectionModel ().getSelectedIndex ()) {
-				case 0: if(!tableTextField.getText().equals("") && !tableTextArea.getText().equals("")){
-							Optimize.createTable(tableTextField.getText(), tableTextArea.getText());
-							queryDetailsTextArea.appendText("\n\n[NEW OPTIMIZATION]\n");
-							queryDetailsTextArea.appendText(Optimize.optimizations);
-						}
-					break;
-				case 1: if(!viewTextField.getText().equals("") && !viewTextArea.getText().equals("")){
-							Optimize.createView(viewTextField.getText(), viewTextArea.getText());
-							queryDetailsTextArea.appendText("\n\n[NEW OPTIMIZATION]\n");
-							queryDetailsTextArea.appendText(Optimize.optimizations);
-						}
-					break;
-				case 2: if(!indexNameTextField.getText().equals("") && !indexTableTextField.getText().equals("")){
-							Optimize.createIndex(indexNameTextField.getText(), indexTableTextField.getText());
-							queryDetailsTextArea.appendText("\n\n[NEW OPTIMIZATION]\n");
-							queryDetailsTextArea.appendText(Optimize.optimizations);
-						}
-					break;
-				}
-				
-				Database.getInstance().query(queryTextArea.getText().replace("\n", ""));
-			}
-		});
 		queryComboBox.setOnAction(e -> {
 			searchTextField.setText("");
 
             setQueryDetails();
         });
+		
+		raQueryButton.setOnAction(e -> {
+			raVersion = !raVersion;
+			raQueryButton.setSelected (raVersion);
+			QueryNumber.isOriginal = !raVersion;
+		});
 	}
 
 	@Override
