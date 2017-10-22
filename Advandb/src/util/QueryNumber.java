@@ -88,29 +88,53 @@ public class QueryNumber {
 
 	}
 	
-	public static String seven(){
+	public static String seven(String input){
 		if(isOriginal){
-			return null;
+			return "SELECT a.BranchAddress, a.BranchID, a.BranchName, a.BookID, NoTimesLoaned, Title, AuthorLastName, AuthorFirstName, a.PublisherName, Address AS PublisherAddress "
+				 + "FROM (SELECT LB.BranchAddress, BL1.BranchID, LB.BranchName, BL1.BookID, Title, AuthorLastName, AuthorFirstName, Count(*) AS NoTimesLoaned, B.PublisherName, Address "
+				 	   + "FROM book_loans BL1, book B, book_authors BA, publisher P, library_branch LB "
+				 	   + "WHERE BL1.BookID = B.BookID AND BL1.BookID = BA.BookID AND B.PublisherName = P.PublisherName AND BL1.BranchID = LB.BranchID "
+				 	   + "GROUP BY BL1.BranchID, LB.BranchName, BL1.BookID, Title, AuthorLastName, AuthorFirstName, B.PublisherName, Address) AS a "
+				 + "WHERE EXISTS (SELECT b.BranchID, MAXLOAN "
+				 			   + "FROM (SELECT c.BranchID, MAX(LoanCnt2) as MAXLOAN "
+				 			   		 + "FROM (SELECT BL2.BranchID, BL2.BookID, Count(*) AS LoanCnt2 "
+				 			   		 	   + "FROM book_loans BL2 "
+				 			   		 	   + "GROUP BY BL2.BranchID, BL2.BookID) as c "
+				 			   		 + "GROUP BY c.BranchID) as b "
+				 			   + "WHERE a.BranchID = b.BranchID AND NoTimesLoaned = MAXLOAN) and a.BranchAddress = '"+input+"' "
+				 + "ORDER BY a.BranchID ASC, Title;";
 		}else{
 			return null;
 		}
 		
 	}
 	
-	public static String eight(){
+	public static String eight(String input){
 		if(isOriginal){
-			return null;
+			return "SELECT a.DateOut, a.BranchAddress, a.BranchID, a.BranchName, a.BookID, NoTimesLoaned, Title, AuthorLastName, AuthorFirstName, a.PublisherName, Address AS PublisherAddress "
+					 + "FROM (SELECT BL1.DateOut, LB.BranchAddress, BL1.BranchID, LB.BranchName, BL1.BookID, Title, AuthorLastName, AuthorFirstName, Count(*) AS NoTimesLoaned, B.PublisherName, Address "
+					 	   + "FROM book_loans BL1, book B, book_authors BA, publisher P, library_branch LB "
+					 	   + "WHERE BL1.BookID = B.BookID AND BL1.BookID = BA.BookID AND B.PublisherName = P.PublisherName AND BL1.BranchID = LB.BranchID AND year(BL1.DateOut) = '"+input+"' "
+					 	   + "GROUP BY BL1.BranchID, LB.BranchName, BL1.BookID, Title, AuthorLastName, AuthorFirstName, B.PublisherName, Address) AS a "
+					 + "WHERE EXISTS (SELECT b.BranchID, minLoan "
+					 			   + "FROM (SELECT c.BranchID, min(LoanCnt2) as minLoan "
+					 			   		 + "FROM (SELECT BL2.BranchID, BL2.BookID, Count(*) AS LoanCnt2 "
+					 			   		 	   + "FROM book_loans BL2 "
+					 			   		 	   + "GROUP BY BL2.BranchID, BL2.BookID) as c "
+					 			   		 + "GROUP BY c.BranchID) as b "
+					 			   + "WHERE a.BranchID = b.BranchID AND NoTimesLoaned = minLoan) "
+					 + "ORDER BY a.BranchID ASC, Title;";
 		}else{
 			return null;
 		}
 	}
 	
 	public static String oneDescription(){
-		return "This query is used for showing the user the book loans where the borrower returned their borrowed book on the date it was due.";
+		return "This query is used for showing the user the list of book loans where books were borrowed by borrowers on a specific date, i.e. the list of book loans which occured on a specified date.";
 	}
 
 	public static String twoDescription(){
-		return "This query is used for showing the user the book loans where the borrower returned their borrowed book after the due date.";
+		return "This query is used for showing the user the book loans where books were returned by borrowers on a specific date, i.e. the list of book returns on a specified date.";
 	}
 	
 	public static String threeDescription(){
@@ -134,6 +158,6 @@ public class QueryNumber {
 	}
 	
 	public static String eightDescription(){
-		return "This query is used for showing the user the list of books which were the least borrowed in each branch over the past specific number of years.";
+		return "This query is used for showing the user the list of books which were the least borrowed in each branch in a specific year.";
 	}
 }

@@ -371,11 +371,9 @@ public class QueryView extends BorderPane implements View{
             				break;
             case "query 6": queryTextArea.setText(QueryNumber.six(s[0]).replace("FROM", "\nFROM").replace("WHERE",  "\nWHERE").replace("GROUP", "\nGROUP").replace("HAVING", "\nHAVING").replace("ORDER", "\nORDER"));
             				break;
-            case "query 7": searchTextField.setPromptText("DateOut");
-            				queryDetailsTextArea.setText(QueryNumber.sevenDescription ());
+            case "query 7": queryTextArea.setText(QueryNumber.seven(s[0]).replace("FROM", "\nFROM").replace("WHERE",  "\nWHERE").replace("GROUP", "\nGROUP").replace("HAVING", "\nHAVING").replace("ORDER", "\nORDER"));
                             break;
-            case "query 8": searchTextField.setPromptText("DateOut");
-            				queryDetailsTextArea.setText(QueryNumber.eightDescription ());
+            case "query 8": queryTextArea.setText(QueryNumber.eight(s[0]).replace("FROM", "\nFROM").replace("WHERE",  "\nWHERE").replace("GROUP", "\nGROUP").replace("HAVING", "\nHAVING").replace("ORDER", "\nORDER"));
             }
 			
 		});
@@ -409,9 +407,9 @@ public class QueryView extends BorderPane implements View{
 						break;
 					case 5: Database.getInstance().query(QueryNumber.six(s[0]));
 						break;
-					case 6: Database.getInstance().query(QueryNumber.seven());
+					case 6: Database.getInstance().query(QueryNumber.seven(s[0]));
 						break;
-					case 7: Database.getInstance().query(QueryNumber.eight());
+					case 7: Database.getInstance().query(QueryNumber.eight(s[0]));
 						break;
 				}
 			}else{
@@ -514,10 +512,10 @@ public class QueryView extends BorderPane implements View{
         				queryDetailsTextArea.setText(QueryNumber.sixDescription ());
         				queryTextArea.setText(QueryNumber.six(s[0]).replace("FROM", "\nFROM").replace("WHERE",  "\nWHERE").replace("GROUP", "\nGROUP").replace("HAVING", "\nHAVING").replace("ORDER", "\nORDER").replace("UNION", "\n\nUNION\n\n"));
                         break;
-        case "query 7": searchTextField.setPromptText("DateOut");
+        case "query 7": searchTextField.setPromptText("BranchAdress");
         				queryDetailsTextArea.setText(QueryNumber.sevenDescription ());
                         break;
-        case "query 8": searchTextField.setPromptText("DateOut");
+        case "query 8": searchTextField.setPromptText("Year");
         				queryDetailsTextArea.setText(QueryNumber.eightDescription ());
         }
         
