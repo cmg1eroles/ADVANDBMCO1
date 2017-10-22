@@ -22,7 +22,7 @@
 }
 
 .ComboBox {
-	-fx-font-size: 20px;
+	-fx-font-size: 16px;
 	-fx-font-family: Akrobat;
 	-fx-font-weight: normal;
 	-fx-background-color: #FDD835;
@@ -52,31 +52,38 @@
 	-fx-font-family: Akrobat;
 	-fx-font-weight: normal;
 	-fx-background-color: #FFFFFF;
-	-fx-border-color: #BDBDBD;
+	-fx-border-color: #000000;
 	-fx-border-radius: 3px;
 	-fx-effect: dropshadow(three-pass-box, #9E9E9E, 3, 0, 0, 2);
 }
 
 
 .Button {
-	-fx-font-size: 20px;
+	-fx-font-size: 16px;
 	-fx-padding: 5px 25px 5px 25px;
 	-fx-font-family: Akrobat;
 	-fx-font-weight: bold;
 	-fx-background-color: #00e500;
-	-fx-background-radius: 25px;
 	-fx-text-fill: #FFFFFF;
 	-fx-cursor: hand;
 	-fx-effect: dropshadow(three-pass-box, #9E9E9E, 4, 0, 0, 2);
 }
 
 .Button:hover {
+	-fx-opacity: 0.6;
 	-fx-background-color: #00cc00
 }
 
 .Button:pressed {
+	-fx-opacity: 0.8;
 	-fx-background-color: #00b200;
 	-fx-effect: dropshadow(three-pass-box, transparent, 0, 0, 0, 0);
+}
+
+.Button:selected {
+		-fx-opacity: 1.0;
+		-fx-background-color: #009900;
+		-fx-effect: dropshadow(three-pass-box, transparent, 0, 0, 0, 0);
 }
 
 #TextArea {
