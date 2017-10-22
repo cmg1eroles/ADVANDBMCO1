@@ -60,6 +60,49 @@ public class QueryNumber {
 		return null;
 	}
 	
+	public static String threeRA(String input1, String input2){
+		return "SELECT title "
+			 + "FROM book NATURAL JOIN (SELECT BookID FROM book_authors "
+			 		+ "WHERE AuthorLastName = '"+input1+"' AND AuthorFirstName = '"+input2+"') BA;";
+	}
+	
+	public static String fourRA(String input){
+		return "SELECT BranchName "
+			 + "FROM library_branch INNER JOIN (SELECT Address, PublisherName FROM publisher "
+			 		+ "WHERE PublisherName = '"+input+"') P ON BranchAddress = Address;";
+	}
+	
+	public static String fiveRA(String input1, String input2){
+		return "SELECT * "
+			  +"FROM ((SELECT BranchName AS 'Branch/Publisher', Address "
+			  		+"FROM library_branch INNER JOIN borrower ON BranchAddress = Address "
+			  		+"WHERE BorrowerFName = '"+input1+"' AND BorrowerLName = '"+input2+"') "
+
+	   		  +"UNION"
+
+	   		  +" (SELECT PublisherName AS 'Branch/Publisher', BO.Address "
+	   		  		+"FROM publisher P INNER JOIN borrower BO ON P.Address = BO.Address "
+	   		  		+"WHERE BorrowerFName = '"+input1+"' AND BorrowerLName = '"+input2+ "')"
+	   		  +") T1;";
+	}
+	
+	public static String sixRA(String input){
+		return "SELECT BorrowerLName, BorrowerFName, COUNT(*) AS '#BooksBorrowed' "
+			  +"FROM book_loans NATURAL JOIN (SELECT BorrowerLName, BorrowerFName, CardNo, BranchID "
+			  		+"FROM borrower INNER JOIN library_branch LB ON Address = BranchAddress) T1 "
+			  +"GROUP BY T1.CardNo "
+			  +"HAVING COUNT(*) >= "+input+";";
+
+	}
+	
+	public static String sevenRA(){
+		return null;
+	}
+	
+	public static String eightRA(){
+		return null;
+	}
+	
 	public static String oneDescription(){
 		return "This query is used for showing the user the book loans where the borrower returned their borrowed book on the date it was due.";
 	}
